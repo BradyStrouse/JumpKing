@@ -2,55 +2,35 @@ package Character;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Dimension;
-public class Character{
-    private double xcor = 0;
-    private double ycor = 0;
-    private Rectangle rect;
+import java.awt.Point;
+public class Character extends Rectangle{
     private Color color = new Color(0, 0, 0);
-    public Character(int width, int height){
-        rect = new Rectangle(width, height);
-    }
-    public Character(double xcor, double ycor){
-        this.xcor = xcor;
-        this.ycor = ycor;
-    }
-    public Character(double xcor, double ycor, int width, int height){
-        this.xcor = xcor;
-        this.ycor = ycor;
-        rect = new Rectangle(width, height);
-    }
-
-
-
-    private void setColor(Color color){
-        this.color = color;
-    }
-
-    private void setx(double xcor){
-        this.xcor = xcor;
-    }
-    private void sety(double ycor){
-        this.ycor = ycor;
-    }
-    private void setHeight(int height){
-        rect.setSize(new Dimension((int)rect.getWidth(), height));
-    }
-    private void setWidth(int width){
-        rect.setSize(new Dimension(width, (int)rect.getHeight()));
-    }
-
 
     
-    private double getx(){
-        return xcor;
+
+    public void setColor(Color color){
+        this.color = color;
     }
-    private double gety(){
-        return ycor;
+    public void setHeight(int height){
+        setSize(new Dimension((int)getWidth(), height));
     }
-    private int getHeight(){
-        return height;
+    public void setWidth(int width){
+        setSize(new Dimension(width, (int)getHeight()));
     }
-    private int getWidth(){
-        return width;
+
+    public int getintX(){
+        return (int) getX();
+    }
+    public int getintY(){
+        return (int) getY();
+    }
+    public int getintWidth(){
+        return (int) getWidth();
+    }
+    public int getintHeight(){
+        return (int) getHeight();
+    }
+    public Color getColor(){
+        return color;
     }
 }
