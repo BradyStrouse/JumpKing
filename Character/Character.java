@@ -6,7 +6,28 @@ import java.awt.Point;
 public class Character extends Rectangle{
     private Color color = new Color(0, 0, 0);
 
-    
+    //Constructors
+    public Character(){}
+    public Character(int width, int height){
+        setWidth(width);
+        setHeight(height);
+    }
+    public Character(int width, int height, int x, int y){
+        setWidth(width);
+        setHeight(height);
+        setLocation(new Point((int)x, (int)y));
+    }
+    public Character(int width, int height, Color color){
+        setWidth(width);
+        setHeight(height);
+        this.color = color;
+    }
+    public Character(int x, int y, int width, int height, Color color){
+        setWidth(width);
+        setHeight(height);
+        setLocation(new Point(x,y));
+        this.color = color;
+    }
 
     public void setColor(Color color){
         this.color = color;

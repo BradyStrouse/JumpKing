@@ -1,4 +1,3 @@
-import Character.Character;
 import Character.Character_test;
 public class main {
 
