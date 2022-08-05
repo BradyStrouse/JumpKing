@@ -3,12 +3,20 @@ package gameFrame;
 import Character.Character;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import java.awt.image.BufferedImage;
 import java.awt.Graphics;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import javax.swing.JPanel;
 
 import TimedEvents.TimedEvents;
 
@@ -18,7 +26,8 @@ import java.awt.Dimension;
 public class myFrame extends JFrame {
     // The main controlled character
     private Character chara = new Character(50, 70, 250, 250);
-
+    int level = 0;
+    BufferedImage background = getbackground();
     /*
      * The number for calculations is VERY important,
      * it determins how often everything will be calcualted
@@ -50,11 +59,12 @@ public class myFrame extends JFrame {
     }
 
     private void createAndMakeGUI() {
-        Dimension size = new Dimension(800, 800);
+        Dimension size = new Dimension(1200, 800);
         chara.moveTo((int) size.getWidth() / 2, (int) size.getHeight() / 2);
         pane = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
+                g.drawImage(background, 0, 0, (int) size.getWidth(), (int) size.getHeight(), Color.BLACK, null);
                 drawCharacter(g);
             }
         };
@@ -83,6 +93,16 @@ public class myFrame extends JFrame {
         // if the vels are negative then they will move down
         chara.moveUp(chara.getintY_vel());
         chara.moveRight(chara.getintX_vel());
+    }
+
+    private BufferedImage getbackground() {
+        try {
+            return ImageIO.read(new File("Levels//Level_" + level + ".png"));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void startGame() {
