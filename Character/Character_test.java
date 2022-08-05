@@ -2,6 +2,7 @@ package Character;
 
 import javax.swing.JFrame;
 import java.awt.Graphics;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +22,7 @@ public class Character_test extends JFrame {
     private ScheduledExecutorService eService;
 
     public Character_test() {
+        eService = Executors.newSingleThreadScheduledExecutor();
         TimedEvents TE = new TimedEvents();
         rPaint = TE.new repaint(this);
         cPhysics = TE.new calculatePhysics(this);
@@ -33,6 +35,7 @@ public class Character_test extends JFrame {
         JPanel pane = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
+                System.out.println(chara.getintY());
                 drawCharacter(g);
             }
         };
@@ -41,6 +44,7 @@ public class Character_test extends JFrame {
         setSize(size);
         add(pane);
         setVisible(true);
+        startGame();
     }
 
     private void drawCharacter(Graphics g) {
@@ -55,12 +59,13 @@ public class Character_test extends JFrame {
         repaint();
     }
 
-    public void calcualtePhysics() {
+    public void calculatePhysics() {
         chara.doGravity();
     }
 
     public void startGame() {
+        // eService.scheduleAtFixedRate(cPhysics, 0, calculations,
+        // TimeUnit.MICROSECONDS);
         eService.scheduleAtFixedRate(rPaint, 0, paintTime, TimeUnit.MICROSECONDS);
-        eService.scheduleAtFixedRate(cPhysics, 21000, calculations, TimeUnit.MICROSECONDS);
     }
 }
