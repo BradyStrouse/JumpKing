@@ -1,7 +1,7 @@
 package gameFrame;
 
 import Character.Character;
-
+import hitBoxes.Hitbox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 
@@ -34,14 +35,14 @@ public class myFrame extends JFrame {
      * Currently it runs at 144.1 times per second
      * once every about 6944 microseconds for precisions sake
      */
-    private final long calculations = 6944;
-    private final long paintTime = 6944;
+    private final long calculations = 4000;
+    private final long paintTime = 4000;
 
     /*
      * The two main events that are seperate from eachother
      * 
      * rPaint = Repainting
-     * cPhysics = physcis
+     * cPhysics = calculate physcis
      */
     private static TimedEvents.repaint rPaint;
     private static TimedEvents.calculatePhysics cPhysics;
@@ -50,11 +51,14 @@ public class myFrame extends JFrame {
     // main panel that paints the game on it
     private JPanel pane;
 
+    private Hitbox[] hbox = new Hitbox[1];
+
     public myFrame() {
         eService = Executors.newSingleThreadScheduledExecutor();
         TimedEvents TE = new TimedEvents();
         rPaint = TE.new repaint(this);
         cPhysics = TE.new calculatePhysics(this);
+        hbox[0] = new Hitbox(0, 1200, 700, 700);
         createAndMakeGUI();
     }
 
@@ -66,6 +70,10 @@ public class myFrame extends JFrame {
             protected void paintComponent(Graphics g) {
                 g.drawImage(background, 0, 0, (int) size.getWidth(), (int) size.getHeight(), Color.BLACK, null);
                 drawCharacter(g);
+                g.setColor(Color.RED);
+                for (Hitbox hit : hbox) {
+                    g.fillRect(hit.getX1(), hit.getY1(), (int) hit.getWidth(), (int) hit.getHeight());
+                }
             }
         };
         pane.setSize(size);
@@ -85,7 +93,8 @@ public class myFrame extends JFrame {
     }
 
     public void repaint() {
-        super.repaint();
+        pane.repaint();
+        Toolkit.getDefaultToolkit().sync();
     }
 
     public void calculatePhysics() {
