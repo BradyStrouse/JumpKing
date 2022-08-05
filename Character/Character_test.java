@@ -2,10 +2,13 @@ package Character;
 
 import javax.swing.JFrame;
 import java.awt.Graphics;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
+
+import TimedEvents.TimedEvents;
+
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -19,7 +22,8 @@ public class Character_test extends JFrame {
 
     public Character_test() {
         TimedEvents TE = new TimedEvents();
-        rPaint = new TE.new repaint(this)
+        rPaint = TE.new repaint(this);
+        cPhysics = TE.new calculatePhysics(this);
         createAndMakeGUI();
     }
 
@@ -51,8 +55,12 @@ public class Character_test extends JFrame {
         repaint();
     }
 
+    public void calcualtePhysics() {
+        chara.doGravity();
+    }
+
     public void startGame() {
-        eService.scheduleAtFixedRate(rPaint, 0, paint, TimeUnit.MICROSECONDS);
+        eService.scheduleAtFixedRate(rPaint, 0, paintTime, TimeUnit.MICROSECONDS);
         eService.scheduleAtFixedRate(cPhysics, 21000, calculations, TimeUnit.MICROSECONDS);
     }
 }
