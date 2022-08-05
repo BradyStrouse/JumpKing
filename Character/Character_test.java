@@ -14,12 +14,30 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 public class Character_test extends JFrame {
+    // The main controlled character
     private Character chara = new Character(50, 70, 250, 250);
+
+    /*
+     * The number for calculations is VERY important,
+     * it determins how often everything will be calcualted
+     * Currently it runs at 144.1 times per second
+     * once every about 6944 microseconds for precisions sake
+     */
     private final long calculations = 6944;
     private final long paintTime = 6944;
-    private static TimedEvents.repaint rPaint;// repaints every clock amount of time
-    private static TimedEvents.calculatePhysics cPhysics;// Used to calcualte physics
+
+    /*
+     * The two main events that are seperate from eachother
+     * 
+     * rPaint = Repainting
+     * cPhysics = physcis
+     */
+    private static TimedEvents.repaint rPaint;
+    private static TimedEvents.calculatePhysics cPhysics;
     private ScheduledExecutorService eService;
+
+    // main panel that paints the game on it
+    private JPanel pane;
 
     public Character_test() {
         eService = Executors.newSingleThreadScheduledExecutor();
@@ -30,12 +48,11 @@ public class Character_test extends JFrame {
     }
 
     private void createAndMakeGUI() {
-        Dimension size = new Dimension(500, 500);
-        chara.moveTo(250, 250);
-        JPanel pane = new JPanel() {
+        Dimension size = new Dimension(800, 800);
+        chara.moveTo((int) size.getWidth() / 2, (int) size.getHeight() / 2);
+        pane = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
-                System.out.println(chara.getintY());
                 drawCharacter(g);
             }
         };
@@ -56,16 +73,19 @@ public class Character_test extends JFrame {
     }
 
     public void repaint() {
-        repaint();
+        super.repaint();
     }
 
     public void calculatePhysics() {
         chara.doGravity();
+        // if the vels are negative then they will move down
+        chara.moveUp(chara.getintY_vel());
+        chara.moveRight(chara.getintX_vel());
     }
 
     public void startGame() {
-        // eService.scheduleAtFixedRate(cPhysics, 0, calculations,
-        // TimeUnit.MICROSECONDS);
+        eService.scheduleAtFixedRate(cPhysics, 0, calculations,
+                TimeUnit.MICROSECONDS);
         eService.scheduleAtFixedRate(rPaint, 0, paintTime, TimeUnit.MICROSECONDS);
     }
 }

@@ -12,7 +12,6 @@ public class TimedEvents {
 
         @Override
         public void run() {
-            System.out.println("calucating");
             frame.calculatePhysics();
         }
     }
@@ -26,7 +25,6 @@ public class TimedEvents {
 
         @Override
         public void run() {
-            System.out.println("repainting");
             frame.repaint();
         }
     }

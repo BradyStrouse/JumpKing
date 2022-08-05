@@ -1,7 +1,5 @@
 package Character;
 
-import java.lang.management.GarbageCollectorMXBean;
-
 public class movement {
     double horizontal_speed = 10;
     double vertical_speed = 10;

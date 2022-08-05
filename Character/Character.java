@@ -4,15 +4,16 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.lang.Math;
 
 public class Character extends Rectangle {
     private Color color = new Color(100, 0, 200);
     public Rectangle inner; // the inner color of the character
     private int xsmaller = 10, ysmaller = 10; // how much smaller the inner rect is going to be from the original rect
     boolean onGround = false;
-    private double gravity = 1;
-    private int x_vel;
-    private int y_vel;
+    private double gravity = .07;
+    private double x_vel = 0;
+    private double y_vel = -7;
 
     // Constructors
     public Character(int width, int height) {
@@ -45,8 +46,6 @@ public class Character extends Rectangle {
 
     // creates the inner rectangle that has color
     private void declareInner() {
-        x_vel = 0;
-        y_vel = 0;
         inner = new Rectangle(getintWidth() - xsmaller, getintHeight() - ysmaller);
         Point pon = getLocation();
         inner.setLocation(new Point((int) pon.getX() - xsmaller, (int) pon.getY() - ysmaller));
@@ -79,12 +78,12 @@ public class Character extends Rectangle {
             return;
         if (onGround)
             return;
-        y_vel -= gravity;
+        // adding makes it move down (ik its weird)
+        y_vel += gravity;
     }
 
-    // moves the center of the character to the point given
     public void moveTo(int x, int y) {
-        Point newLocation = new Point(x - (int) (getWidth() / 2), y - (int) (getHeight() / 2));
+        Point newLocation = new Point(x, y);
         super.setLocation(newLocation);
         inner.setLocation(new Point((int) newLocation.getX() + xsmaller / 2, (int) newLocation.getY() + ysmaller / 2));
     }
@@ -109,11 +108,21 @@ public class Character extends Rectangle {
         return (int) getX();
     }
 
-    public int getx_vel() {
+    public int getintX_vel() {
+        // math.round twice bc it needs to go from double to long to int
+        return Math.round(Math.round(x_vel));
+    }
+
+    public int getintY_vel() {
+        // math.round twice bc it needs to go from double to long to int
+        return Math.round(Math.round(y_vel));
+    }
+
+    public double getx_vel() {
         return x_vel;
     }
 
-    public int gety_vel() {
+    public double gety_vel() {
         return y_vel;
     }
 
