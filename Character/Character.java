@@ -74,7 +74,7 @@ public class Character extends Rectangle {
         moveTo(getintX() + howMuch, getintY());
     }
 
-    private void doGravity() {
+    public void doGravity() {
         if (y_vel > 20)
             return;
         if (onGround)
