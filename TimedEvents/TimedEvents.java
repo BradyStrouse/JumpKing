@@ -1,12 +1,12 @@
 package TimedEvents;
 
-import Character.Character_test;
+import gameFrame.myFrame;
 
 public class TimedEvents {
     public class calculatePhysics implements Runnable {
-        Character_test frame;
+        myFrame frame;
 
-        public calculatePhysics(Character_test frame) {
+        public calculatePhysics(myFrame frame) {
             this.frame = frame;
         }
 
@@ -17,9 +17,9 @@ public class TimedEvents {
     }
 
     public class repaint implements Runnable {
-        Character_test frame;
+        myFrame frame;
 
-        public repaint(Character_test frame) {
+        public repaint(myFrame frame) {
             this.frame = frame;
         }
 
