@@ -5,14 +5,17 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
-public class Character_test extends JFrame{
-    public Character_test(){
+
+public class Character_test extends JFrame {
+    public Character_test() {
         createAndMakeGUI();
     }
-    private void createAndMakeGUI(){
+
+    private void createAndMakeGUI() {
         Dimension size = new Dimension(500, 500);
-        Character chara = new Character(50, 50, 250, 250);
-        JPanel pane = new JPanel(){
+        Character chara = new Character(50, 70, 250, 250);
+        chara.moveTo(250, 250);
+        JPanel pane = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 g.setColor(chara.getColor());
@@ -21,7 +24,7 @@ public class Character_test extends JFrame{
             }
         };
         pane.setSize(size);
-        pane.setBackground(new Color(255,255,255));
+        pane.setBackground(new Color(255, 255, 255));
         setSize(size);
         add(pane);
         setVisible(true);
