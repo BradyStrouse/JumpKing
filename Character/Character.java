@@ -9,8 +9,12 @@ public class Character extends Rectangle {
     private Color color = new Color(100, 0, 200);
     public Rectangle inner; // the inner color of the character
     private int xsmaller = 10, ysmaller = 10; // how much smaller the inner rect is going to be from the original rect
-    // Constructors
+    boolean onGround = false;
+    private double gravity = 1;
+    private int x_vel;
+    private int y_vel;
 
+    // Constructors
     public Character(int width, int height) {
         setWidth(width);
         setHeight(height);
@@ -41,15 +45,19 @@ public class Character extends Rectangle {
 
     // creates the inner rectangle that has color
     private void declareInner() {
+        x_vel = 0;
+        y_vel = 0;
         inner = new Rectangle(getintWidth() - xsmaller, getintHeight() - ysmaller);
         Point pon = getLocation();
         inner.setLocation(new Point((int) pon.getX() - xsmaller, (int) pon.getY() - ysmaller));
     }
 
+    // inner color
     public void setColor(Color color) {
         this.color = color;
     }
 
+    // movement
     public void moveUp(int howMuch) {
         moveTo(getintX(), getintY() + howMuch);
     }
@@ -64,6 +72,14 @@ public class Character extends Rectangle {
 
     public void moveRight(int howMuch) {
         moveTo(getintX() + howMuch, getintY());
+    }
+
+    private void doGravity() {
+        if (y_vel > 20)
+            return;
+        if (onGround)
+            return;
+        y_vel -= gravity;
     }
 
     // moves the center of the character to the point given
@@ -81,8 +97,24 @@ public class Character extends Rectangle {
         setSize(new Dimension(width, (int) getHeight()));
     }
 
+    public void setx_vel(int newVel) {
+        x_vel = newVel;
+    }
+
+    public void sety_vel(int newVel) {
+        y_vel = newVel;
+    }
+
     public int getintX() {
         return (int) getX();
+    }
+
+    public int getx_vel() {
+        return x_vel;
+    }
+
+    public int gety_vel() {
+        return y_vel;
     }
 
     public int getintY() {

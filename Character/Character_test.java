@@ -2,14 +2,24 @@ package Character;
 
 import javax.swing.JFrame;
 import java.awt.Graphics;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 
 public class Character_test extends JFrame {
     private Character chara = new Character(50, 70, 250, 250);
+    private final long calculations = 6944;
+    private final long paintTime = 6944;
+    private static TimedEvents.repaint rPaint;// repaints every clock amount of time
+    private static TimedEvents.calculatePhysics cPhysics;// Used to calcualte physics
+    private ScheduledExecutorService eService;
 
     public Character_test() {
+        TimedEvents TE = new TimedEvents();
+        rPaint = new TE.new repaint(this)
         createAndMakeGUI();
     }
 
@@ -35,5 +45,14 @@ public class Character_test extends JFrame {
         // draws the inner rect with color
         g.fillRect((int) chara.inner.getX(), (int) chara.inner.getY(), (int) chara.inner.getWidth(),
                 (int) chara.inner.getHeight());
+    }
+
+    public void repaint() {
+        repaint();
+    }
+
+    public void startGame() {
+        eService.scheduleAtFixedRate(rPaint, 0, paint, TimeUnit.MICROSECONDS);
+        eService.scheduleAtFixedRate(cPhysics, 21000, calculations, TimeUnit.MICROSECONDS);
     }
 }
