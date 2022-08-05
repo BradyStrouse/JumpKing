@@ -11,8 +11,8 @@ public class Character extends Rectangle {
     public Rectangle inner; // the inner color of the character
     private int xsmaller = 10, ysmaller = 10; // how much smaller the inner rect is going to be from the original rect
     boolean onGround = false;
-    private double gravity = .07;
-    private double x_vel = 0;
+    private double gravity = .15;
+    private double x_vel = 1;
     private double y_vel = -7;
 
     // Constructors

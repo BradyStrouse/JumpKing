@@ -1,8 +1,8 @@
-import Character.Character_test;
+import gameFrame.myFrame;
 
 public class main {
 
     public static void main(String[] args) {
-        new Character_test();
+        new myFrame();
     }
 }
