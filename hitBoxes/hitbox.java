@@ -2,12 +2,12 @@ package hitBoxes;
 
 import java.awt.Rectangle;
 
-public class Hitbox extends Rectangle {
+public class hitbox extends Rectangle {
 
     private int x1, x2, y1, y2;
     private boolean horizontal, vertical, diagonal;
 
-    public Hitbox(int x1, int x2, int y1, int y2) {
+    public hitbox(int x1, int x2, int y1, int y2) {
         this.x1 = x1;
         this.x2 = x2;
         this.y1 = y1;
@@ -18,7 +18,7 @@ public class Hitbox extends Rectangle {
         diagonal = !(vertical && horizontal);
     }
 
-    public Hitbox(int x1, int x2, int y1, int y2, int height) {
+    public hitbox(int x1, int x2, int y1, int y2, int height) {
         this.x1 = x1;
         this.x2 = x2;
         this.y1 = y1;

@@ -1,6 +1,6 @@
 package TimedEvents;
 
-import gameFrame.myFrame;
+import gameFrame.myFrame;;
 
 public class TimedEvents {
     public class calculatePhysics implements Runnable {
