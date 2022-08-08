@@ -1,7 +1,7 @@
 package gameFrame;
 
 import Character.Character;
-import hitBoxes.Hitbox;
+import hitBoxes.Hitboxes;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -51,14 +51,14 @@ public class myFrame extends JFrame {
     // main panel that paints the game on it
     private JPanel pane;
 
-    private Hitbox[] hbox = new Hitbox[1];
+    private Hitboxes[] hbox = new Hitboxes[1];
 
     public myFrame() {
         eService = Executors.newSingleThreadScheduledExecutor();
         TimedEvents TE = new TimedEvents();
         rPaint = TE.new repaint(this);
         cPhysics = TE.new calculatePhysics(this);
-        hbox[0] = new Hitbox(0, 1200, 700, 700);
+        hbox[0] = new Hitboxes(0, 1200, 700, 700);
         createAndMakeGUI();
     }
 
@@ -71,9 +71,11 @@ public class myFrame extends JFrame {
                 g.drawImage(background, 0, 0, (int) size.getWidth(), (int) size.getHeight(), Color.BLACK, null);
                 drawCharacter(g);
                 g.setColor(Color.RED);
-                for (Hitbox hit : hbox) {
-                    g.fillRect(hit.getX1(), hit.getY1(), (int) hit.getWidth(), (int) hit.getHeight());
-                    g.drawLine(hit.getX1(), hit.getY1(), hit.getX2(), hit.getY2());
+                for (Hitboxes hit : hbox) {
+                    g.drawLine(hit.getintX1(), hit.getintY1(), hit.getintX2(), hit.getintY2());
+                    if(chara.intersectsLine(hit)){
+                        chara.stop(hit);
+                    }
                 }
             }
         };

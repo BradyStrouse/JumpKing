@@ -1,9 +1,12 @@
 package Character;
 
+import hitBoxes.Hitboxes;
+
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Dimension;
 import java.awt.Point;
+
 import java.lang.Math;
 
 public class Character extends Rectangle {
@@ -43,7 +46,11 @@ public class Character extends Rectangle {
         this.color = color;
         declareInner();
     }
-
+    public void stop(Hitboxes hit){
+        x_vel = 0;
+        y_vel = 0;
+        moveTo(getintX(), hit.getintY1()-height);
+    }
     // creates the inner rectangle that has color
     private void declareInner() {
         inner = new Rectangle(getintWidth() - xsmaller, getintHeight() - ysmaller);

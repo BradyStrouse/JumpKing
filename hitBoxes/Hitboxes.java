@@ -2,26 +2,22 @@ package hitBoxes;
 
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
-public class Hitbox extends Line2D.Double {
+import java.awt.geom.Point2D;
+public class Hitboxes extends Line2D.Double{
 
-    private int x1, x2, y1, y2;
     private boolean horizontal, vertical, diagonal;
-
-    public Hitbox(int x1, int x2, int y1, int y2) {
-        this.x1 = x1;
-        this.x2 = x2;
-        this.y1 = y1;
-        this.y2 = y2;
+    Point2D p1;
+    Point2D p2;
+    public Hitboxes(int x1, int x2, int y1, int y2) {
+        p1 = new Point2D.Double(x1, y1);
+        p2 = new Point2D.Double(x2, y2);
+        super.setLine(p1,p2);
         horizontal = x1 == x2;
         vertical = y1 == y2;
         diagonal = !(vertical && horizontal);
     }
 
-    public Hitbox(int x1, int x2, int y1, int y2, int height) {
-        this.x1 = x1;
-        this.x2 = x2;
-        this.y1 = y1;
-        this.y2 = y2;
+    public Hitboxes(int x1, int x2, int y1, int y2, int height) {
         horizontal = x1 == x2;
         vertical = y1 == y2;
         diagonal = !(vertical && horizontal);
@@ -53,19 +49,16 @@ public class Hitbox extends Line2D.Double {
     public boolean getDiagonal(){
         return diagonal;
     }
-    public double getX1() {
-        return x1;
+    public int getintX1() {
+        return (int) super.getX1();
     }
-
-    public int getX2() {
-        return x2;
+    public int getintX2(){
+        return (int) super.getX2();
     }
-
-    public int getY1() {
-        return y1;
+    public int getintY1(){
+        return (int) super.getY1();
     }
-
-    public int getY2() {
-        return y2;
+    public int getintY2(){
+        return (int) super.getY2();
     }
 }
