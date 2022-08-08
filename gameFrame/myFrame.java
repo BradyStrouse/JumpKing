@@ -2,11 +2,11 @@ package gameFrame;
 
 import Character.Character;
 import hitBoxes.Hitbox;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -36,7 +36,7 @@ public class myFrame extends JFrame {
      * once every about 6944 microseconds for precisions sake
      */
     private final long calculations = 4000;
-    private final long paintTime = 4000;
+    private final long paintTime = 6944;//miliseconds
 
     /*
      * The two main events that are seperate from eachother
@@ -73,6 +73,7 @@ public class myFrame extends JFrame {
                 g.setColor(Color.RED);
                 for (Hitbox hit : hbox) {
                     g.fillRect(hit.getX1(), hit.getY1(), (int) hit.getWidth(), (int) hit.getHeight());
+                    g.drawLine(hit.getX1(), hit.getY1(), hit.getX2(), hit.getY2());
                 }
             }
         };
