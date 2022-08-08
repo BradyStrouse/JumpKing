@@ -73,8 +73,8 @@ public class myFrame extends JFrame {
                 g.setColor(Color.RED);
                 for (Hitboxes hit : hbox) {
                     g.drawLine(hit.getintX1(), hit.getintY1(), hit.getintX2(), hit.getintY2());
-                    if(chara.intersectsLine(hit)){
-                        chara.stop(hit);
+                    if(chara.getNextFrame().intersectsLine(hit)){
+                        chara.interact(hit);
                     }
                 }
             }

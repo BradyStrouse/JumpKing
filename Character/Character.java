@@ -19,6 +19,17 @@ public class Character extends Rectangle {
     private double y_vel = -7;
 
     // Constructors
+    
+    /*
+     * used to generate characters in the future or past, hence why theres no inner
+     */
+    public Character(Character chara){
+        setWidth(chara.getintWidth());
+        setHeight(chara.getintHeight());
+        setx_vel(chara.getx_vel());
+        sety_vel(chara.gety_vel());
+        inner = null;
+    }
     public Character(int width, int height) {
         setWidth(width);
         setHeight(height);
@@ -46,7 +57,7 @@ public class Character extends Rectangle {
         this.color = color;
         declareInner();
     }
-    public void stop(Hitboxes hit){
+    public void interact(Hitboxes hit){
         x_vel = 0;
         y_vel = 0;
         moveTo(getintX(), hit.getintY1()-height);
@@ -92,27 +103,36 @@ public class Character extends Rectangle {
     public void moveTo(int x, int y) {
         Point newLocation = new Point(x, y);
         super.setLocation(newLocation);
+        if(inner == null) return;
         inner.setLocation(new Point((int) newLocation.getX() + xsmaller / 2, (int) newLocation.getY() + ysmaller / 2));
     }
 
+    public Character getNextFrame(){
+        Character nextFrame = new Character(this);
+        nextFrame.moveTo(nextFrame.getintX()+nextFrame.getintX_vel()
+                        ,nextFrame.getintY()+nextFrame.getintX_vel());       
+        return nextFrame;
+    }
+
     public void setHeight(int height) {
-        setSize(new Dimension((int) getWidth(), height));
+        setSize(new Dimension(getintWidth(), height));
     }
 
     public void setWidth(int width) {
-        setSize(new Dimension(width, (int) getHeight()));
+        setSize(new Dimension(width, getintHeight()));
     }
 
-    public void setx_vel(int newVel) {
+    public void setx_vel(double newVel) {
         x_vel = newVel;
     }
 
-    public void sety_vel(int newVel) {
+    public void sety_vel(double newVel) {
         y_vel = newVel;
     }
 
     public int getintX() {
-        return (int) getX();
+        // math.round twice bc it needs to go from double to long to int
+        return Math.round(Math.round(getX()));
     }
 
     public int getintX_vel() {
@@ -134,15 +154,15 @@ public class Character extends Rectangle {
     }
 
     public int getintY() {
-        return (int) getY();
+        return Math.round(Math.round(getY()));
     }
 
     public int getintWidth() {
-        return (int) getWidth();
+        return Math.round(Math.round(getWidth()));
     }
 
     public int getintHeight() {
-        return (int) getHeight();
+        return Math.round(Math.round(getHeight()));
     }
 
     public Color getColor() {

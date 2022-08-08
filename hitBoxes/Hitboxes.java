@@ -1,6 +1,5 @@
 package hitBoxes;
 
-import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 public class Hitboxes extends Line2D.Double{
@@ -23,7 +22,7 @@ public class Hitboxes extends Line2D.Double{
         diagonal = !(vertical && horizontal);
 
     }
-
+    
     public void setX1(int x1) {
         this.x1 = x1;
     }
