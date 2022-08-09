@@ -71,6 +71,14 @@ public class Character extends Rectangle {
             moveTo(getintX(), hit.getintY1()-height);
         }
         else if(hit.getVertical()){
+            if(getx_vel() < 0){
+                this.moveRight(3);
+            }
+            else{
+                this.moveLeft(3);
+            }
+            System.out.println(getx_vel());
+            System.out.println("know this: " + getx_vel()*-.6);
             this.setx_vel(getx_vel()*-.6);
         }
     }
