@@ -51,7 +51,7 @@ public class myFrame extends JFrame {
     // main panel that paints the game on it
     private JPanel pane;
 
-    private Hitboxes[] hbox = new Hitboxes[1];
+    private Hitboxes[] hbox = new Hitboxes[2];
 
     public myFrame() {
         eService = Executors.newSingleThreadScheduledExecutor();
@@ -59,6 +59,7 @@ public class myFrame extends JFrame {
         rPaint = TE.new repaint(this);
         cPhysics = TE.new calculatePhysics(this);
         hbox[0] = new Hitboxes(0, 1200, 700, 700);
+        hbox[1] = new Hitboxes(900, 900, 0, 900);
         createAndMakeGUI();
     }
 
@@ -72,6 +73,7 @@ public class myFrame extends JFrame {
                 drawCharacter(g);
                 g.setColor(Color.RED);
                 for (Hitboxes hit : hbox) {
+                    System.out.println(chara);
                     g.drawLine(hit.getintX1(), hit.getintY1(), hit.getintX2(), hit.getintY2());
                     if(chara.getNextFrame().intersectsLine(hit)){
                         chara.interact(hit);

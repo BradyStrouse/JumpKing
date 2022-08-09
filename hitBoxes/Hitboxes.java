@@ -7,12 +7,13 @@ public class Hitboxes extends Line2D.Double{
     private boolean horizontal, vertical, diagonal;
     Point2D p1;
     Point2D p2;
+
     public Hitboxes(int x1, int x2, int y1, int y2) {
         p1 = new Point2D.Double(x1, y1);
         p2 = new Point2D.Double(x2, y2);
         super.setLine(p1,p2);
-        horizontal = x1 == x2;
-        vertical = y1 == y2;
+        horizontal = y1 == y2;
+        vertical = x1 == x2;
         diagonal = !(vertical && horizontal);
     }
 

@@ -18,6 +18,13 @@ public class Character extends Rectangle {
     private double x_vel = 1;
     private double y_vel = -7;
 
+
+    public String toString(){
+        return " x_vel: " + x_vel +
+               " y_vel: " + y_vel +
+               " x: " + getX() +
+               " y: " + getY() + "\n";
+    }
     // Constructors
     
     /*
@@ -60,7 +67,12 @@ public class Character extends Rectangle {
     public void interact(Hitboxes hit){
         x_vel = 0;
         y_vel = 0;
-        moveTo(getintX(), hit.getintY1()-height);
+        if(hit.getHorizontal()) {
+            moveTo(getintX(), hit.getintY1()-height);
+        }
+        else if(hit.getVertical()){
+            this.setx_vel(getx_vel()*-.6);
+        }
     }
     // creates the inner rectangle that has color
     private void declareInner() {
@@ -109,8 +121,8 @@ public class Character extends Rectangle {
 
     public Character getNextFrame(){
         Character nextFrame = new Character(this);
-        nextFrame.moveTo(nextFrame.getintX()+nextFrame.getintX_vel()
-                        ,nextFrame.getintY()+nextFrame.getintX_vel());       
+        nextFrame.moveTo(this.getintX()+this.getintX_vel()
+                        ,this.getintY()+this.getintX_vel());       
         return nextFrame;
     }
 
