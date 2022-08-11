@@ -1,10 +1,11 @@
 package gameFrame;
 
-import Character.Character;
 import hitBoxes.Hitboxes;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import Character.Character;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +37,7 @@ public class myFrame extends JFrame {
      * Currently it runs at 144.1 times per second
      * once every about 6944 microseconds for precisions sake
      */
-    private final long calculations = 4000;
+    private final long calculations = 6944;
     private final long paintTime = 6944;//miliseconds
 
     /*
@@ -51,15 +53,15 @@ public class myFrame extends JFrame {
     // main panel that paints the game on it
     private JPanel pane;
 
-    private Hitboxes[] hbox = new Hitboxes[2];
+    private ArrayList<Hitboxes> hbox = new ArrayList<Hitboxes>();
 
     public myFrame() {
         eService = Executors.newSingleThreadScheduledExecutor();
         TimedEvents TE = new TimedEvents();
         rPaint = TE.new repaint(this);
         cPhysics = TE.new calculatePhysics(this);
-        hbox[0] = new Hitboxes(0, 1200, 700, 700);
-        hbox[1] = new Hitboxes(900, 900, 0, 900);
+        hbox.add(new Hitboxes(0, 1200, 700, 700));
+        hbox.add(new Hitboxes(900, 900, 0, 900));
         createAndMakeGUI();
     }
 
