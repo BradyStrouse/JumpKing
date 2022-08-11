@@ -14,9 +14,9 @@ public class Character extends Rectangle {
     public Rectangle inner; // the inner color of the character
     private int xsmaller = 10, ysmaller = 10; // how much smaller the inner rect is going to be from the original rect
     boolean onGround = false;
-    private double gravity = .05;
+    private double gravity = .09;
     private double x_vel = 1;
-    private double y_vel = -7;
+    private double y_vel = -5;
 
 
     public String toString(){
@@ -65,21 +65,13 @@ public class Character extends Rectangle {
         declareInner();
     }
     public void interact(Hitboxes hit){
-        x_vel = 0;
-        y_vel = 0;
         if(hit.getHorizontal()) {
+            onGround = true;
             moveTo(getintX(), hit.getintY1()-height);
         }
         else if(hit.getVertical()){
-            if(getx_vel() < 0){
-                this.moveRight(3);
-            }
-            else{
-                this.moveLeft(3);
-            }
-            System.out.println(getx_vel());
-            System.out.println("know this: " + getx_vel()*-.6);
-            this.setx_vel(getx_vel()*-.6);
+            moveLeft(1);
+            x_vel = (x_vel*-.6);
         }
     }
     // creates the inner rectangle that has color
