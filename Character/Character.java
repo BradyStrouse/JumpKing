@@ -17,14 +17,16 @@ public class Character extends Rectangle {
     private double gravity = .02;
     private double x_vel = 1;
     private double y_vel = -4.5;
-
-
+    private boolean charging = false;
+    private double chargeAmount;
+    
     public String toString(){
         return " x_vel: " + x_vel +
-               " y_vel: " + y_vel +
-               " x: " + getX() +
-               " y: " + getY() + "\n";
+        " y_vel: " + y_vel +
+        " x: " + getX() +
+        " y: " + getY() + "\n";
     }
+
     // Constructors
     
     /*
@@ -87,36 +89,48 @@ public class Character extends Rectangle {
     public void setColor(Color color) {
         this.color = color;
     }
+
+    public void chargeJump(){
+        charging = true;
+    }
+    public void stepLeft(){
+        if(!onGround) return;
+        x_vel = 3;
+    }
+    public void stepRight(){
+        if(!onGround) return;
+        x_vel = -3;
+    }
     /*
-     * MOVEMENT FOR DOUBLE
-     */
+    * MOVEMENT FOR DOUBLE
+    */
     public void moveUp(double howMuch) {
         moveTo(getX(), getY() + howMuch);
     }
-
+    
     public void moveDown(double howMuch) {
         moveTo(getX(), getY() - howMuch);
     }
-
+    
     public void moveLeft(double howMuch) {
         moveTo(getX() - howMuch, getY());
     }
-
+    
     public void moveRight(double howMuch) {
         moveTo(getX() + howMuch, getY());
     }
     
     /*
-     * MOVEMENT FOR INTEGERS
-     */
+    * MOVEMENT FOR INTEGERS
+    */
     public void moveUp(int howMuch) {
         moveTo(getintX(), getintY() + howMuch);
     }
-
+    
     public void moveDown(int howMuch) {
         moveTo(getintX(), getintY() - howMuch);
     }
-
+    
     public void moveLeft(int howMuch) {
         moveTo(getintX() - howMuch, getintY());
     }
@@ -124,16 +138,19 @@ public class Character extends Rectangle {
     public void moveRight(int howMuch) {
         moveTo(getintX() + howMuch, getintY());
     }
-
+    
     public void doGravity() {
+        if(charging && chargeAmount < 4){
+            chargeAmount += .05;
+        }
         if (y_vel > 20)
-            return;
+        return;
         if (onGround)
-            return;
+        return;
         // adding makes it move down (ik its weird)
         y_vel += gravity;
     }
-
+    
     public void moveTo(int x, int y) {
         Point newLocation = new Point(x, y);
         super.setLocation(newLocation);
@@ -151,10 +168,10 @@ public class Character extends Rectangle {
     public Character getNextFrame(){
         Character nextFrame = new Character(this);
         nextFrame.moveTo(this.getintX()+this.getintX_vel()
-                        ,this.getintY()+this.getintX_vel());       
+        ,this.getintY()+this.getintX_vel());       
         return nextFrame;
     }
-
+    
     public void setHeight(int height) {
         setSize(new Dimension(getintWidth(), height));
     }
@@ -162,7 +179,7 @@ public class Character extends Rectangle {
     public void setWidth(int width) {
         setSize(new Dimension(width, getintHeight()));
     }
-
+    
     public void setx_vel(double newVel) {
         x_vel = newVel;
     }

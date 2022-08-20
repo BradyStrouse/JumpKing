@@ -1,6 +1,5 @@
 package gameFrame;
 
-import hitBoxes.Hitboxes;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -21,7 +20,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+
 import TimedEvents.TimedEvents;
+import hitBoxes.Hitboxes;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -58,6 +59,7 @@ public class myFrame extends JFrame {
     public myFrame() {
         eService = Executors.newSingleThreadScheduledExecutor();
         TimedEvents TE = new TimedEvents();
+        Keybindings keybinds;
         rPaint = TE.new repaint(this);
         cPhysics = TE.new calculatePhysics(this);
         hbox.add(new Hitboxes(0, 1200, 700, 700));
