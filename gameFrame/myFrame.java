@@ -37,8 +37,8 @@ public class myFrame extends JFrame {
      * Currently it runs at 144.1 times per second
      * once every about 6944 microseconds for precisions sake
      */
-    private final long calculations = 6944;
-    private final long paintTime = 6944;//miliseconds
+    private final long calculations = 3;//miliseconds
+    private final long paintTime = 16;//miliseconds
 
     /*
      * The two main events that are seperate from eachother
@@ -75,17 +75,14 @@ public class myFrame extends JFrame {
                 drawCharacter(g);
                 g.setColor(Color.RED);
                 for (Hitboxes hit : hbox) {
-                    System.out.println(chara);
                     g.drawLine(hit.getintX1(), hit.getintY1(), hit.getintX2(), hit.getintY2());
-                    if(chara.getNextFrame().intersectsLine(hit)){
-                        chara.interact(hit);
-                    }
                 }
             }
         };
         pane.setSize(size);
         pane.setBackground(new Color(255, 255, 255));
         setSize(size);
+        setResizable(false);
         add(pane);
         setVisible(true);
         startGame();
@@ -105,10 +102,15 @@ public class myFrame extends JFrame {
     }
 
     public void calculatePhysics() {
-        chara.doGravity();
-        // if the vels are negative then they will move down
-        chara.moveUp(chara.getintY_vel());
-        chara.moveRight(chara.getintX_vel());
+        chara.doGravity();     
+        // if the vels are negative then the character will move the other direction
+        chara.moveUp(chara.gety_vel());
+        chara.moveRight(chara.getx_vel());
+        for(Hitboxes hit:hbox){
+            if(chara.getNextFrame().intersectsLine(hit)){
+                chara.interact(hit);
+            }
+        }
     }
 
     private BufferedImage getbackground() {
@@ -122,8 +124,8 @@ public class myFrame extends JFrame {
     }
 
     public void startGame() {
-        eService.scheduleAtFixedRate(cPhysics, 0, calculations,
-                TimeUnit.MICROSECONDS);
-        eService.scheduleAtFixedRate(rPaint, 0, paintTime, TimeUnit.MICROSECONDS);
+        TimeUnit unit = TimeUnit.MILLISECONDS;
+        eService.scheduleAtFixedRate(cPhysics, 500, calculations, unit);
+        eService.scheduleAtFixedRate(rPaint, 0, paintTime, unit);
     }
 }

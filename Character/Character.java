@@ -14,9 +14,9 @@ public class Character extends Rectangle {
     public Rectangle inner; // the inner color of the character
     private int xsmaller = 10, ysmaller = 10; // how much smaller the inner rect is going to be from the original rect
     boolean onGround = false;
-    private double gravity = .09;
+    private double gravity = .02;
     private double x_vel = 1;
-    private double y_vel = -5;
+    private double y_vel = -4.5;
 
 
     public String toString(){
@@ -67,6 +67,8 @@ public class Character extends Rectangle {
     public void interact(Hitboxes hit){
         if(hit.getHorizontal()) {
             onGround = true;
+            x_vel = 0;
+            y_vel = 0;
             moveTo(getintX(), hit.getintY1()-height);
         }
         else if(hit.getVertical()){
@@ -85,8 +87,28 @@ public class Character extends Rectangle {
     public void setColor(Color color) {
         this.color = color;
     }
+    /*
+     * MOVEMENT FOR DOUBLE
+     */
+    public void moveUp(double howMuch) {
+        moveTo(getX(), getY() + howMuch);
+    }
 
-    // movement
+    public void moveDown(double howMuch) {
+        moveTo(getX(), getY() - howMuch);
+    }
+
+    public void moveLeft(double howMuch) {
+        moveTo(getX() - howMuch, getY());
+    }
+
+    public void moveRight(double howMuch) {
+        moveTo(getX() + howMuch, getY());
+    }
+    
+    /*
+     * MOVEMENT FOR INTEGERS
+     */
     public void moveUp(int howMuch) {
         moveTo(getintX(), getintY() + howMuch);
     }
@@ -118,6 +140,13 @@ public class Character extends Rectangle {
         if(inner == null) return;
         inner.setLocation(new Point((int) newLocation.getX() + xsmaller / 2, (int) newLocation.getY() + ysmaller / 2));
     }
+    public void moveTo(double x, double y) {
+        Point newLocation = new Point();
+        newLocation.setLocation(x, y);
+        super.setLocation(newLocation);
+        if(inner == null) return;
+        inner.setLocation(new Point((int) newLocation.getX() + xsmaller / 2, (int) newLocation.getY() + ysmaller / 2));
+    }
 
     public Character getNextFrame(){
         Character nextFrame = new Character(this);
@@ -145,6 +174,12 @@ public class Character extends Rectangle {
     public int getintX() {
         // math.round twice bc it needs to go from double to long to int
         return Math.round(Math.round(getX()));
+        // return (int) getX();
+    }
+    
+    public int getintY() {
+        return Math.round(Math.round(getY()));
+        // return (int)super.getY();
     }
 
     public int getintX_vel() {
@@ -165,9 +200,6 @@ public class Character extends Rectangle {
         return y_vel;
     }
 
-    public int getintY() {
-        return Math.round(Math.round(getY()));
-    }
 
     public int getintWidth() {
         return Math.round(Math.round(getWidth()));
