@@ -15,11 +15,13 @@ public class Character extends Rectangle {
     private int xsmaller = 10, ysmaller = 10; // how much smaller the inner rect is going to be from the original rect
     boolean onGround = false;
     private double gravity = .02;
-    private double x_vel = 1;
+    private double x_vel = 0;
     private double y_vel = -4.5;
     private boolean charging = false;
     private double chargeAmount;
-    
+    int count = 0;
+
+    private double groundSpeed = 4;
     public String toString(){
         return " x_vel: " + x_vel +
         " y_vel: " + y_vel +
@@ -30,7 +32,8 @@ public class Character extends Rectangle {
     // Constructors
     
     /*
-     * used to generate characters in the future or past, hence why theres no inner
+     * this first one is used to generate characters that 
+     * arent meant to be used for GUI
      */
     public Character(Character chara){
         setWidth(chara.getintWidth());
@@ -39,6 +42,10 @@ public class Character extends Rectangle {
         sety_vel(chara.gety_vel());
         inner = null;
     }
+
+    /*
+     * Different constructors
+     */
     public Character(int width, int height) {
         setWidth(width);
         setHeight(height);
@@ -66,12 +73,14 @@ public class Character extends Rectangle {
         this.color = color;
         declareInner();
     }
+
+
     public void interact(Hitboxes hit){
         if(hit.getHorizontal()) {
             onGround = true;
             x_vel = 0;
             y_vel = 0;
-            moveTo(getintX(), hit.getintY1()-height);
+            moveTo(getintX(), hit.getintY1()-height+1);
         }
         else if(hit.getVertical()){
             moveLeft(1);
@@ -90,20 +99,31 @@ public class Character extends Rectangle {
         this.color = color;
     }
 
-    public void chargeJump(){
+    public void startCharging(){
         charging = true;
     }
+    public void stopCharging(){
+        charging = false;
+        onGround = false;
+        jump();
+    }
     public void jump(){
+        //remove these useless assingings of charageAmount later
+        chargeAmount = -4;
         y_vel = chargeAmount;
+        chargeAmount = 0;
     }
     public void stepLeft(){
         if(!onGround) return;
-        x_vel = -1;
+        if(charging)return;
+        x_vel = -groundSpeed;
     }
     public void stepRight(){
         if(!onGround) return;
-        x_vel = 3;
+        if(charging) return;
+        x_vel = groundSpeed;
     }
+
     /*
     * MOVEMENT FOR DOUBLE
     */
@@ -171,7 +191,7 @@ public class Character extends Rectangle {
     public Character getNextFrame(){
         Character nextFrame = new Character(this);
         nextFrame.moveTo(this.getintX()+this.getintX_vel()
-        ,this.getintY()+this.getintX_vel());       
+        ,this.getintY()+this.getintY_vel());       
         return nextFrame;
     }
     

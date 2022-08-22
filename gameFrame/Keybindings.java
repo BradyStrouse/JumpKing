@@ -9,10 +9,12 @@ import Character.Character;
 public class Keybindings {
     Action leftAction;
     Action rightAction;
+    Action Stop;
     Action crouch;
     Action downAction;
     Action startJumpTimer;
     Action jump;
+    Action charge;
     Action upAction;
 
     myFrame frame;
@@ -23,18 +25,28 @@ public class Keybindings {
         leftAction    = new LeftAction(chara);
         rightAction   = new RightAction(chara);
         crouch        = new crouch(chara);
+        charge        = new Charge(chara);
         jump          = new jump(chara);
         upAction      = new UpAction(chara);
-        
+        Stop          = new Stop(chara);
         //movement with arrow keys
-        pane.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "jump");
+        pane.getInputMap().put(KeyStroke.getKeyStroke("release SPACE"), "charge");
+        pane.getActionMap().put("charge", charge);
+        pane.getInputMap().put(KeyStroke.getKeyStroke("released SPACE"), "jump");
         pane.getActionMap().put("jump", jump);
 
-        pane.getInputMap().put(KeyStroke.getKeyStroke("LEFT"), "moveLeft");
+        pane.getInputMap().put(KeyStroke.getKeyStroke("pressed LEFT"), "moveLeft");
         pane.getActionMap().put("moveLeft", leftAction);
 
-        pane.getInputMap().put(KeyStroke.getKeyStroke("RIGHT"), "moveRight");
+        pane.getInputMap().put(KeyStroke.getKeyStroke("released LEFT"), "StopLeft");
+        pane.getActionMap().put("StopLeft", Stop);
+
+        
+        pane.getInputMap().put(KeyStroke.getKeyStroke("pressed RIGHT"), "moveRight");
         pane.getActionMap().put("moveRight", rightAction);
+        
+        pane.getInputMap().put(KeyStroke.getKeyStroke("released RIGHT"), "StopRight");
+        pane.getActionMap().put("StopRight", Stop);
 
         pane.getInputMap().put(KeyStroke.getKeyStroke("UP"), "nextLevel");
         pane.getActionMap().put("nextLevel", upAction);
@@ -52,7 +64,16 @@ class LeftAction extends AbstractAction{
         chara.stepLeft();
     }
 }
-
+class Stop extends AbstractAction{
+    Character chara;
+    public Stop(Character chara){
+        this.chara = chara;
+    }
+    @Override
+    public void actionPerformed(ActionEvent arg0){
+        chara.setx_vel(0);
+    }
+}
 class RightAction extends AbstractAction{
     Character chara;
     public RightAction(Character chara) {
@@ -61,7 +82,6 @@ class RightAction extends AbstractAction{
 
     @Override
     public void actionPerformed(ActionEvent arg0){
-       // System.out.println("trying to move");
         chara.stepRight();
     }
 }
@@ -74,13 +94,24 @@ class crouch extends AbstractAction{
 
     @Override
     public void actionPerformed(ActionEvent arg0){
-        chara.chargeJump();
+        chara.startCharging();
     }
 }
 // class letGo extends AbstractAction{
 //     Character chara;
 
 // }
+class Charge extends AbstractAction{
+    Character chara;
+    public Charge(Character chara){
+        this.chara = chara;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent arg0){
+        chara.startCharging();
+    }
+}
 class jump extends AbstractAction{
     Character chara;
     public jump(Character chara) {
@@ -89,7 +120,7 @@ class jump extends AbstractAction{
 
     @Override
     public void actionPerformed(ActionEvent arg0){
-        chara.jump();
+        chara.stopCharging();
     }
 }
 
@@ -101,7 +132,6 @@ class UpAction extends AbstractAction{
 
     @Override
     public void actionPerformed(ActionEvent arg0){
-       // System.out.println("trying to move");
-       
+       chara.jump();
     }
 }

@@ -96,7 +96,7 @@ public class myFrame extends JFrame {
         // draws the inner rect with color
         g.fillRect((int) chara.inner.getX(), (int) chara.inner.getY(), (int) chara.inner.getWidth(),
                 (int) chara.inner.getHeight());
-            }
+        }
 
     public void repaint() {
         pane.repaint();
@@ -108,6 +108,7 @@ public class myFrame extends JFrame {
         // if the vels are negative then the character will move the other direction
         chara.moveUp(chara.gety_vel());
         chara.moveRight(chara.getx_vel());
+        // System.out.println(chara);
         for(Hitboxes hit:hbox){
             if(chara.getNextFrame().intersectsLine(hit)){
                 chara.interact(hit);
