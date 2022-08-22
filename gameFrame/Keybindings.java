@@ -1,10 +1,9 @@
+package gameFrame;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-
-import gameFrame.myFrame;
 
 import Character.Character;
 public class Keybindings {
@@ -19,14 +18,14 @@ public class Keybindings {
     myFrame frame;
     Character chara;
     JPanel pane;
-    public Keybindings(myFrame frame, JPanel pane){
+    public Keybindings(Character chara, JPanel pane){
         this.chara = chara;
-        this.pane = pane;
         leftAction    = new LeftAction(chara);
         rightAction   = new RightAction(chara);
         crouch        = new crouch(chara);
         jump          = new jump(chara);
         upAction      = new UpAction(chara);
+        
         //movement with arrow keys
         pane.getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "jump");
         pane.getActionMap().put("jump", jump);
@@ -90,7 +89,7 @@ class jump extends AbstractAction{
 
     @Override
     public void actionPerformed(ActionEvent arg0){
-        chara.getMovement().jump();
+        chara.jump();
     }
 }
 

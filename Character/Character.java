@@ -93,13 +93,16 @@ public class Character extends Rectangle {
     public void chargeJump(){
         charging = true;
     }
+    public void jump(){
+        y_vel = chargeAmount;
+    }
     public void stepLeft(){
         if(!onGround) return;
-        x_vel = 3;
+        x_vel = -1;
     }
     public void stepRight(){
         if(!onGround) return;
-        x_vel = -3;
+        x_vel = 3;
     }
     /*
     * MOVEMENT FOR DOUBLE
@@ -141,7 +144,7 @@ public class Character extends Rectangle {
     
     public void doGravity() {
         if(charging && chargeAmount < 4){
-            chargeAmount += .05;
+            chargeAmount -= .05;
         }
         if (y_vel > 20)
         return;

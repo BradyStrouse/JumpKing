@@ -3,6 +3,7 @@ package gameFrame;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.text.JTextComponent.KeyBinding;
 
 import Character.Character;
 
@@ -32,11 +33,9 @@ public class myFrame extends JFrame {
     private Character chara = new Character(50, 70, 250, 250);
     int level = 0;
     BufferedImage background = getbackground();
+
     /*
-     * The number for calculations is VERY important,
-     * it determins how often everything will be calcualted
-     * Currently it runs at 144.1 times per second
-     * once every about 6944 microseconds for precisions sake
+     * how often it will do certain things
      */
     private final long calculations = 3;//miliseconds
     private final long paintTime = 16;//miliseconds
@@ -49,6 +48,7 @@ public class myFrame extends JFrame {
      */
     private static TimedEvents.repaint rPaint;
     private static TimedEvents.calculatePhysics cPhysics;
+    //used to schedule tasks
     private ScheduledExecutorService eService;
 
     // main panel that paints the game on it
@@ -59,14 +59,13 @@ public class myFrame extends JFrame {
     public myFrame() {
         eService = Executors.newSingleThreadScheduledExecutor();
         TimedEvents TE = new TimedEvents();
-        Keybindings keybinds;
         rPaint = TE.new repaint(this);
         cPhysics = TE.new calculatePhysics(this);
         hbox.add(new Hitboxes(0, 1200, 700, 700));
         hbox.add(new Hitboxes(900, 900, 0, 900));
         createAndMakeGUI();
     }
-
+    
     private void createAndMakeGUI() {
         Dimension size = new Dimension(1200, 800);
         chara.moveTo((int) size.getWidth() / 2, (int) size.getHeight() / 2);
@@ -81,6 +80,7 @@ public class myFrame extends JFrame {
                 }
             }
         };
+        new Keybindings(chara, pane);
         pane.setSize(size);
         pane.setBackground(new Color(255, 255, 255));
         setSize(size);
@@ -96,7 +96,7 @@ public class myFrame extends JFrame {
         // draws the inner rect with color
         g.fillRect((int) chara.inner.getX(), (int) chara.inner.getY(), (int) chara.inner.getWidth(),
                 (int) chara.inner.getHeight());
-    }
+            }
 
     public void repaint() {
         pane.repaint();
