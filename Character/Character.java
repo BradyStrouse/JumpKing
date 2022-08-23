@@ -18,10 +18,11 @@ public class Character extends Rectangle {
     private double x_vel = 0;
     private double y_vel = -4.5;
     private boolean charging = false;
+    private boolean crouched = false;
     private double chargeAmount;
     int count = 0;
+    private double groundSpeed = 1;
 
-    private double groundSpeed = 4;
     public String toString(){
         return " x_vel: " + x_vel +
         " y_vel: " + y_vel +
@@ -49,21 +50,21 @@ public class Character extends Rectangle {
     public Character(int width, int height) {
         setWidth(width);
         setHeight(height);
-        declareInner();
+        declareVariables();
     }
 
     public Character(int width, int height, int x, int y) {
         setWidth(width);
         setHeight(height);
         setLocation(new Point((int) x, (int) y));
-        declareInner();
+        declareVariables();
     }
 
     public Character(int width, int height, Color color) {
         setWidth(width);
         setHeight(height);
         this.color = color;
-        declareInner();
+        declareVariables();
     }
 
     public Character(int x, int y, int width, int height, Color color) {
@@ -71,7 +72,7 @@ public class Character extends Rectangle {
         setHeight(height);
         setLocation(new Point(x, y));
         this.color = color;
-        declareInner();
+        declareVariables();
     }
 
 
@@ -85,14 +86,13 @@ public class Character extends Rectangle {
         else if(hit.getVertical()){
             if(onGround){
                  x_vel = 0;
-                 return;
             }
             moveLeft(1);
             x_vel = (x_vel*-.6);
         }
     }
     // creates the inner rectangle that has color
-    private void declareInner() {
+    private void declareVariables() {
         inner = new Rectangle(getintWidth() - xsmaller, getintHeight() - ysmaller);
         Point pon = getLocation();
         inner.setLocation(new Point((int) pon.getX() - xsmaller, (int) pon.getY() - ysmaller));
@@ -104,27 +104,30 @@ public class Character extends Rectangle {
     }
 
     public void startCharging(){
-        charging = true;
+        if (charging || !onGround) return;
+        chargeAmount = -.5;
         crouch();
     }
 
     public void crouch(){
-        height /= 2;
-        inner.setSize((int)inner.getWidth(),(int) inner.getHeight()/2);
+        this.setSize(new Dimension(getintWidth(), getintHeight()/2));
+        inner.setSize(new Dimension(getintWidth()-10, getintHeight()/2+7));
+        charging = true;
     }
 
     public void stand(){
-        height *= 2;
-        inner.setSize((int)inner.getWidth(),(int) inner.getHeight()*2);
+        this.setSize(new Dimension(getintWidth(), getintHeight()*2));
     }
     public void stopCharging(){
         if(!onGround) return;
+        if(!charging) return;
         charging = false;
         onGround = false;
         stand();
         jump();
     }
     public void jump(){
+        declareVariables();
         y_vel = chargeAmount;
     }
     public void stepLeft(){
@@ -146,7 +149,7 @@ public class Character extends Rectangle {
     }
     
     public void moveDown(double howMuch) {
-        moveTo(getX(), getY() - howMuch);
+        moveTo(getX(), getY() + howMuch);
     }
     
     public void moveLeft(double howMuch) {
@@ -177,8 +180,9 @@ public class Character extends Rectangle {
     }
     
     public void doGravity() {
-        if(charging && chargeAmount < 4){
-            chargeAmount -= .05;
+        if(charging && chargeAmount > -4){
+            System.out.println(chargeAmount);
+            chargeAmount -= .03;
         }
         if (y_vel > 20)
         return;
