@@ -24,14 +24,14 @@ public class Keybindings {
         this.chara = chara;
         leftAction    = new LeftAction(chara);
         rightAction   = new RightAction(chara);
-        crouch        = new crouch(chara);
         charge        = new Charge(chara);
         jump          = new jump(chara);
         upAction      = new UpAction(chara);
         Stop          = new Stop(chara);
         //movement with arrow keys
-        pane.getInputMap().put(KeyStroke.getKeyStroke("release SPACE"), "charge");
+        pane.getInputMap().put(KeyStroke.getKeyStroke("pressed SPACE"), "charge");
         pane.getActionMap().put("charge", charge);
+
         pane.getInputMap().put(KeyStroke.getKeyStroke("released SPACE"), "jump");
         pane.getActionMap().put("jump", jump);
 
@@ -82,18 +82,6 @@ class RightAction extends AbstractAction{
     @Override
     public void actionPerformed(ActionEvent arg0){
         chara.stepRight();
-    }
-}
-
-class crouch extends AbstractAction{
-    Character chara;
-    public crouch(Character chara) {
-        this.chara = chara;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent arg0){
-        chara.startCharging();
     }
 }
 // class letGo extends AbstractAction{

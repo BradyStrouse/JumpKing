@@ -86,6 +86,7 @@ public class myFrame extends JFrame {
         setSize(size);
         setResizable(false);
         add(pane);
+        this.isAlwaysOnTop();
         setVisible(true);
         startGame();
     }
