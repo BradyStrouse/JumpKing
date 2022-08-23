@@ -80,9 +80,13 @@ public class Character extends Rectangle {
             onGround = true;
             x_vel = 0;
             y_vel = 0;
-            moveTo(getintX(), hit.getintY1()-height+1);
+            moveTo(getintX(), hit.getintY1()-height-1);
         }
         else if(hit.getVertical()){
+            if(onGround){
+                 x_vel = 0;
+                 return;
+            }
             moveLeft(1);
             x_vel = (x_vel*-.6);
         }
@@ -101,17 +105,27 @@ public class Character extends Rectangle {
 
     public void startCharging(){
         charging = true;
+        crouch();
+    }
+
+    public void crouch(){
+        height /= 2;
+        inner.setSize((int)inner.getWidth(),(int) inner.getHeight()/2);
+    }
+
+    public void stand(){
+        height *= 2;
+        inner.setSize((int)inner.getWidth(),(int) inner.getHeight()*2);
     }
     public void stopCharging(){
+        if(!onGround) return;
         charging = false;
         onGround = false;
+        stand();
         jump();
     }
     public void jump(){
-        //remove these useless assingings of charageAmount later
-        chargeAmount = -4;
         y_vel = chargeAmount;
-        chargeAmount = 0;
     }
     public void stepLeft(){
         if(!onGround) return;

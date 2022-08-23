@@ -50,7 +50,6 @@ public class Keybindings {
 
         pane.getInputMap().put(KeyStroke.getKeyStroke("UP"), "nextLevel");
         pane.getActionMap().put("nextLevel", upAction);
-        //pane.getActionMap().put(null, standingStill);
     }
 }
 class LeftAction extends AbstractAction{
