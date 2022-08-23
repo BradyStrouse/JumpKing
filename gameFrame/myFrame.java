@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 
 import TimedEvents.TimedEvents;
-import hitBoxes.Hitboxes;
+import hitBoxes.Hitbox;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -54,15 +54,15 @@ public class myFrame extends JFrame {
     // main panel that paints the game on it
     private JPanel pane;
 
-    private ArrayList<Hitboxes> hbox = new ArrayList<Hitboxes>();
+    private ArrayList<Hitbox> hbox = new ArrayList<Hitbox>();
 
     public myFrame() {
         eService = Executors.newSingleThreadScheduledExecutor();
         TimedEvents TE = new TimedEvents();
         rPaint = TE.new repaint(this);
         cPhysics = TE.new calculatePhysics(this);
-        hbox.add(new Hitboxes(0, 1200, 700, 700));
-        hbox.add(new Hitboxes(900, 900, 0, 900));
+        hbox.add(new Hitbox(0, 1200, 700, 700));
+        hbox.add(new Hitbox(900, 900, 0, 900));
         createAndMakeGUI();
     }
     
@@ -75,7 +75,7 @@ public class myFrame extends JFrame {
                 g.drawImage(background, 0, 0, (int) size.getWidth(), (int) size.getHeight(), Color.BLACK, null);
                 drawCharacter(g);
                 g.setColor(Color.RED);
-                for (Hitboxes hit : hbox) {
+                for (Hitbox hit : hbox) {
                     g.drawLine(hit.getintX1(), hit.getintY1(), hit.getintX2(), hit.getintY2());
                 }
             }
@@ -110,7 +110,7 @@ public class myFrame extends JFrame {
         chara.moveUp(chara.gety_vel());
         chara.moveRight(chara.getx_vel());
         // System.out.println(chara);
-        for(Hitboxes hit:hbox){
+        for(Hitbox hit:hbox){
             if(chara.getNextFrame().intersectsLine(hit)){
                 chara.interact(hit);
             }

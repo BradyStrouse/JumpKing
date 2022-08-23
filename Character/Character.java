@@ -1,6 +1,7 @@
 package Character;
 
-import hitBoxes.Hitboxes;
+import hitBoxes.Hitbox;
+import hitBoxes.Hitbox;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -10,6 +11,7 @@ import java.awt.Point;
 import java.lang.Math;
 
 public class Character extends Rectangle {
+    private Hitbox currentGround;
     private Color color = new Color(100, 0, 200);
     public Rectangle inner; // the inner color of the character
     private int xsmaller = 10, ysmaller = 10; // how much smaller the inner rect is going to be from the original rect
@@ -18,7 +20,6 @@ public class Character extends Rectangle {
     private double x_vel = 0;
     private double y_vel = -4.5;
     private boolean charging = false;
-    private boolean crouched = false;
     private double chargeAmount;
     int count = 0;
     private double groundSpeed = 1;
@@ -76,7 +77,7 @@ public class Character extends Rectangle {
     }
 
 
-    public void interact(Hitboxes hit){
+    public void interact(Hitbox hit){
         if(hit.getHorizontal()) {
             onGround = true;
             x_vel = 0;
@@ -112,6 +113,7 @@ public class Character extends Rectangle {
     public void crouch(){
         this.setSize(new Dimension(getintWidth(), getintHeight()/2));
         inner.setSize(new Dimension(getintWidth()-10, getintHeight()/2+7));
+        moveDown(getWidth()/2+4);
         charging = true;
     }
 
@@ -241,12 +243,16 @@ public class Character extends Rectangle {
     }
 
     public int getintX_vel() {
-        // math.round twice bc it needs to go from double to long to int
+        /*  math.round twice bc it needs to go as follows
+         *  double -> long -> int
+         */
         return Math.round(Math.round(x_vel));
     }
 
     public int getintY_vel() {
-        // math.round twice bc it needs to go from double to long to int
+        /*  math.round twice bc it needs to go as follows
+         *  double -> long -> int
+         */
         return Math.round(Math.round(y_vel));
     }
 
