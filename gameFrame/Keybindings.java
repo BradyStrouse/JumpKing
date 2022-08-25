@@ -48,8 +48,8 @@ public class Keybindings {
         pane.getInputMap().put(KeyStroke.getKeyStroke("released RIGHT"), "StopRight");
         pane.getActionMap().put("StopRight", Stop);
 
-        pane.getInputMap().put(KeyStroke.getKeyStroke("UP"), "nextLevel");
-        pane.getActionMap().put("nextLevel", upAction);
+        // pane.getInputMap().put(KeyStroke.getKeyStroke("UP"), "nextLevel");
+        // pane.getActionMap().put("nextLevel", upAction);
     }
 }
 class LeftAction extends AbstractAction{
@@ -70,7 +70,7 @@ class Stop extends AbstractAction{
     }
     @Override
     public void actionPerformed(ActionEvent arg0){
-        chara.setx_vel(0);
+        chara.stop();
     }
 }
 class RightAction extends AbstractAction{

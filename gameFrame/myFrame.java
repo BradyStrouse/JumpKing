@@ -3,12 +3,12 @@ package gameFrame;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.text.JTextComponent.KeyBinding;
-
 import Character.Character;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
@@ -57,11 +57,18 @@ public class myFrame extends JFrame {
     private ArrayList<Hitbox> hbox = new ArrayList<Hitbox>();
 
     public myFrame() {
+        try {
+            setHitboxes(0);
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         eService = Executors.newSingleThreadScheduledExecutor();
         TimedEvents TE = new TimedEvents();
         rPaint = TE.new repaint(this);
         cPhysics = TE.new calculatePhysics(this);
-        hbox.add(new Hitbox(0, 1200, 700, 700));
+        int y = 740;
+        hbox.add(new Hitbox(0, 1200, y, y));
         hbox.add(new Hitbox(900, 900, 0, 900));
         createAndMakeGUI();
     }
@@ -131,5 +138,33 @@ public class myFrame extends JFrame {
         TimeUnit unit = TimeUnit.MILLISECONDS;
         eService.scheduleAtFixedRate(cPhysics, 500, calculations, unit);
         eService.scheduleAtFixedRate(rPaint, 0, paintTime, unit);
+    }
+    private void setHitboxes(int level) throws FileNotFoundException{
+        File currentLevel = new File("hitBoxes//level_" + level + ".txt");
+        Scanner reader = new Scanner(currentLevel);
+        hbox = new ArrayList<Hitbox>();
+        while(reader.hasNextLine()){
+            String currentWall = reader.nextLine();
+            String[] strCoords = currentWall.split(",");
+            int[] coords = new int[strCoords.length];
+            for(int i = 0; i < coords.length; i++){
+                coords[i] = Integer.parseInt(strCoords[i]);
+            }
+            hbox.add(new Hitbox(coords[0], coords[1], coords[2], coords[3]));
+        }        
+    }
+    private void setHitboxes()throws FileNotFoundException{
+        File currentLevel = new File("hitBoxes//level_" + level + ".txt");
+        Scanner reader = new Scanner(currentLevel);
+        hbox = new ArrayList<Hitbox>();
+        while(reader.hasNextLine()){
+            String currentWall = reader.nextLine();
+            String[] strCoords = currentWall.split(",");
+            int[] coords = new int[strCoords.length];
+            for(int i = 0; i < coords.length; i++){
+                coords[i] = Integer.parseInt(strCoords[i]);
+            }
+            hbox.add(new Hitbox(coords[0], coords[1], coords[2], coords[3]));
+        }  
     }
 }

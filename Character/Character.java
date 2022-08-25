@@ -11,7 +11,6 @@ import java.awt.Point;
 import java.lang.Math;
 
 public class Character extends Rectangle {
-    private Hitbox currentGround;
     private Color color = new Color(100, 0, 200);
     public Rectangle inner; // the inner color of the character
     private int xsmaller = 10, ysmaller = 10; // how much smaller the inner rect is going to be from the original rect
@@ -23,7 +22,12 @@ public class Character extends Rectangle {
     private double chargeAmount;
     int count = 0;
     private double groundSpeed = 1;
-
+    private double airSpeed = 1.5;
+    private int moving = 0; /*0 = not moving
+                              *1 = moving left
+                              *2 = moving right
+                              *this is used for the jumping
+                              */
     public String toString(){
         return " x_vel: " + x_vel +
         " y_vel: " + y_vel +
@@ -78,10 +82,19 @@ public class Character extends Rectangle {
 
 
     public void interact(Hitbox hit){
+        System.out.println("hitting boxes");
         if(hit.getHorizontal()) {
             onGround = true;
-            x_vel = 0;
             y_vel = 0;
+            if(moving == 1){
+                x_vel = -groundSpeed;
+            }
+            else if(moving == 2){
+                x_vel = groundSpeed;
+            }
+            else{
+                x_vel = 0;
+            }
             moveTo(getintX(), hit.getintY1()-height-1);
         }
         else if(hit.getVertical()){
@@ -106,15 +119,15 @@ public class Character extends Rectangle {
 
     public void startCharging(){
         if (charging || !onGround) return;
-        chargeAmount = -.5;
+        x_vel = 0;
         crouch();
     }
 
     public void crouch(){
         this.setSize(new Dimension(getintWidth(), getintHeight()/2));
         inner.setSize(new Dimension(getintWidth()-10, getintHeight()/2+7));
-        moveDown(getWidth()/2+4);
         charging = true;
+        moveDown(width/2-10);
     }
 
     public void stand(){
@@ -129,15 +142,22 @@ public class Character extends Rectangle {
         jump();
     }
     public void jump(){
-        declareVariables();
+        declareVariables(); //puts the inner square in the correct place
+        if(moving == 1) x_vel = -airSpeed;
+        if(moving == 2) x_vel = airSpeed;
         y_vel = chargeAmount;
+        moveUp(width/2);
+        chargeAmount = 0;
+        
     }
     public void stepLeft(){
+        moving = 1;
         if(!onGround) return;
-        if(charging)return;
+        if(charging) return;
         x_vel = -groundSpeed;
     }
     public void stepRight(){
+        moving = 2;
         if(!onGround) return;
         if(charging) return;
         x_vel = groundSpeed;
@@ -166,11 +186,11 @@ public class Character extends Rectangle {
     * MOVEMENT FOR INTEGERS
     */
     public void moveUp(int howMuch) {
-        moveTo(getintX(), getintY() + howMuch);
-    }
+        moveTo(getintX(), getintY() - howMuch);
+    } 
     
     public void moveDown(int howMuch) {
-        moveTo(getintX(), getintY() - howMuch);
+        moveTo(getintX(), getintY() + howMuch);
     }
     
     public void moveLeft(int howMuch) {
@@ -182,9 +202,9 @@ public class Character extends Rectangle {
     }
     
     public void doGravity() {
-        if(charging && chargeAmount > -4){
+        if(charging && chargeAmount > -3.65){
             System.out.println(chargeAmount);
-            chargeAmount -= .03;
+            chargeAmount -= .04;
         }
         if (y_vel > 20)
         return;
@@ -215,6 +235,11 @@ public class Character extends Rectangle {
         return nextFrame;
     }
     
+    public void stop(){
+        moving = 0;
+        if(!onGround) return;
+        x_vel = 0;
+    }
     public void setHeight(int height) {
         setSize(new Dimension(getintWidth(), height));
     }
@@ -264,7 +289,9 @@ public class Character extends Rectangle {
         return y_vel;
     }
 
-
+    public int getMoving(){
+        return moving;
+    }
     public int getintWidth() {
         return Math.round(Math.round(getWidth()));
     }
