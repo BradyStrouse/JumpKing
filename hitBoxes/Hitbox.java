@@ -23,7 +23,34 @@ public class Hitbox extends Line2D.Double{
         diagonal = !(vertical && horizontal);
 
     }
-    
+    public int getMiddleX(){
+        int middle = -1;
+        if(x1 == x2){
+            middle = (int) x1;
+        }
+        if(x1 < x2){
+            middle = (int) (x1+(x2-x1)/2);
+        }
+        else if(x1 > x2){
+            middle = (int) (x2-(x2-x1)/2);
+        }
+        return middle;
+    }
+
+    public int getMiddleY(){
+        int middle = -1;
+        if(y1 == y2){
+            return middle = (int) y1;
+        }
+        else if(y1 < y2){
+            middle = (int) (y1-(y1-y2)/2);
+        }
+        else if(y1 > y2){
+            middle = (int) (y2-(y2-y1)/2);
+        }
+        return middle;
+    }
+
     public void setX1(int x1) {
         this.x1 = x1;
     }

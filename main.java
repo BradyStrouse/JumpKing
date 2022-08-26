@@ -3,6 +3,8 @@ import hitBoxes.*;
 public class main {
 
     public static void main(String[] args) {
-        new createWalls();
+        new myFrame();
+        
+        // new createWalls();
     }
 }

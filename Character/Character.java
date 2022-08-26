@@ -5,12 +5,18 @@ import hitBoxes.Hitbox;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.io.FileNotFoundException;
 import java.awt.Dimension;
 import java.awt.Point;
 
 import java.lang.Math;
 
+import gameFrame.myFrame;
+
 public class Character extends Rectangle {
+
+    myFrame frame;
+
     private Color color = new Color(100, 0, 200);
     public Rectangle inner; // the inner color of the character
     private int xsmaller = 10, ysmaller = 10; // how much smaller the inner rect is going to be from the original rect
@@ -58,11 +64,12 @@ public class Character extends Rectangle {
         declareVariables();
     }
 
-    public Character(int width, int height, int x, int y) {
+    public Character(int width, int height, int x, int y, myFrame frame) {
         setWidth(width);
         setHeight(height);
         setLocation(new Point((int) x, (int) y));
         declareVariables();
+        this.frame = frame;
     }
 
     public Character(int width, int height, Color color) {
@@ -83,7 +90,19 @@ public class Character extends Rectangle {
 
     public void interact(Hitbox hit){
         System.out.println("hitting boxes");
-        if(hit.getHorizontal()) {
+        if(hit.getVertical()){
+            if(x_vel > 0){
+                moveLeft(1);
+            }
+            else{
+                moveRight(1);
+            }
+            if(onGround){
+                x_vel = 0;
+            }
+            x_vel = (x_vel*-.6);
+        }
+        else if(hit.getHorizontal() && y_vel > 0) {
             onGround = true;
             y_vel = 0;
             if(moving == 1){
@@ -96,13 +115,6 @@ public class Character extends Rectangle {
                 x_vel = 0;
             }
             moveTo(getintX(), hit.getintY1()-height-1);
-        }
-        else if(hit.getVertical()){
-            if(onGround){
-                 x_vel = 0;
-            }
-            moveLeft(1);
-            x_vel = (x_vel*-.6);
         }
     }
     // creates the inner rectangle that has color
@@ -148,7 +160,13 @@ public class Character extends Rectangle {
         y_vel = chargeAmount;
         moveUp(width/2);
         chargeAmount = 0;
-        
+        //TODO: delete later
+        try {
+            frame.setHitboxes();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     public void stepLeft(){
         moving = 1;
@@ -206,10 +224,10 @@ public class Character extends Rectangle {
             System.out.println(chargeAmount);
             chargeAmount -= .04;
         }
+        if(charging)
+            return;
         if (y_vel > 20)
-        return;
-        if (onGround)
-        return;
+            return;
         // adding makes it move down (ik its weird)
         y_vel += gravity;
     }

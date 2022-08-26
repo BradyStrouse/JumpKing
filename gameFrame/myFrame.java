@@ -30,7 +30,7 @@ import java.awt.Dimension;
 
 public class myFrame extends JFrame {
     // The main controlled character
-    private Character chara = new Character(50, 70, 250, 250);
+    private Character chara = new Character(50, 70, 250, 250,this);
     int level = 0;
     BufferedImage background = getbackground();
 
@@ -59,7 +59,8 @@ public class myFrame extends JFrame {
     public myFrame() {
         try {
             setHitboxes(0);
-        } catch (FileNotFoundException e) {
+        } 
+        catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -67,9 +68,6 @@ public class myFrame extends JFrame {
         TimedEvents TE = new TimedEvents();
         rPaint = TE.new repaint(this);
         cPhysics = TE.new calculatePhysics(this);
-        int y = 740;
-        hbox.add(new Hitbox(0, 1200, y, y));
-        hbox.add(new Hitbox(900, 900, 0, 900));
         createAndMakeGUI();
     }
     
@@ -153,7 +151,7 @@ public class myFrame extends JFrame {
             hbox.add(new Hitbox(coords[0], coords[1], coords[2], coords[3]));
         }        
     }
-    private void setHitboxes()throws FileNotFoundException{
+    public void setHitboxes()throws FileNotFoundException{
         File currentLevel = new File("hitBoxes//level_" + level + ".txt");
         Scanner reader = new Scanner(currentLevel);
         hbox = new ArrayList<Hitbox>();
