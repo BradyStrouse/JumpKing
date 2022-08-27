@@ -6,5 +6,7 @@ public class main {
         new myFrame();
         
         // new createWalls();
+
+
     }
 }

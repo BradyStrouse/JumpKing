@@ -38,7 +38,7 @@ public class myFrame extends JFrame {
      * how often it will do certain things
      */
     private final long calculations = 3;//miliseconds
-    private final long paintTime = 16;//miliseconds
+    private final long paintTime = 19;//miliseconds
 
     /*
      * The two main events that are seperate from eachother
@@ -117,7 +117,11 @@ public class myFrame extends JFrame {
         // System.out.println(chara);
         for(Hitbox hit:hbox){
             if(chara.getNextFrame().intersectsLine(hit)){
+                chara.enableControls();
                 chara.interact(hit);
+            }
+            else{
+                chara.disableControls();
             }
         }
     }
