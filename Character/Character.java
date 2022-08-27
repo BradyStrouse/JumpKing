@@ -19,16 +19,25 @@ public class Character extends Rectangle {
 
     private Color color = new Color(100, 0, 200);
     public Rectangle inner; // the inner color of the character
+
+    private boolean canControl = true;
+
     private int xsmaller = 10, ysmaller = 10; // how much smaller the inner rect is going to be from the original rect
+
     boolean onGround = false;
-    private double gravity = .02;
+
+    private double gravity = .015;
     private double x_vel = 0;
     private double y_vel = -4.5;
+
     private boolean charging = false;
     private double chargeAmount;
+
     int count = 0;
+
     private double groundSpeed = 1;
     private double airSpeed = 1.5;
+
     private int moving = 0; /*0 = not moving
                               *1 = moving left
                               *2 = moving right
@@ -89,12 +98,11 @@ public class Character extends Rectangle {
 
 
     public void interact(Hitbox hit){
-        System.out.println("hitting boxes");
         if(hit.getVertical()){
             if(x_vel > 0){
                 moveLeft(1);
             }
-            else{
+            else if(x_vel < 0){
                 moveRight(1);
             }
             if(onGround){
@@ -139,7 +147,7 @@ public class Character extends Rectangle {
         this.setSize(new Dimension(getintWidth(), getintHeight()/2));
         inner.setSize(new Dimension(getintWidth()-10, getintHeight()/2+7));
         charging = true;
-        moveDown(width/2-10);
+        moveDown(width/2-20);
     }
 
     public void stand(){
@@ -170,17 +178,22 @@ public class Character extends Rectangle {
     }
     public void stepLeft(){
         moving = 1;
-        if(!onGround) return;
         if(charging) return;
+        if(!canControl) return;
         x_vel = -groundSpeed;
     }
     public void stepRight(){
         moving = 2;
-        if(!onGround) return;
         if(charging) return;
+        if(!canControl) return;
         x_vel = groundSpeed;
     }
-
+    public void enableControls(){
+        canControl = true;
+    }
+    public void disableControls(){
+        canControl = false;
+    }
     /*
     * MOVEMENT FOR DOUBLE
     */
@@ -221,8 +234,7 @@ public class Character extends Rectangle {
     
     public void doGravity() {
         if(charging && chargeAmount > -3.65){
-            System.out.println(chargeAmount);
-            chargeAmount -= .04;
+            chargeAmount -= .03;
         }
         if(charging)
             return;
