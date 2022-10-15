@@ -16,6 +16,8 @@ import gameFrame.myFrame;
 public class Character extends Rectangle {
 
     myFrame frame;
+    
+    private int sizeSmaller = frame.sizeSmaller;
 
     private Color color = new Color(100, 0, 200);
     public Rectangle inner; // the inner color of the character
@@ -24,11 +26,13 @@ public class Character extends Rectangle {
 
     private int xsmaller = 10, ysmaller = 10; // how much smaller the inner rect is going to be from the original rect
 
+    private double chargingSpeed = .02-sizeSmaller, maxCharge = 4-sizeSmaller;
+
     boolean onGround = false;
 
     private double gravity = .015;
     private double x_vel = 0;
-    private double y_vel = -4.5;
+    private double y_vel = 4.5;
 
     private boolean charging = false;
     private double chargeAmount;
@@ -36,7 +40,7 @@ public class Character extends Rectangle {
     int count = 0;
 
     private double groundSpeed = 1;
-    private double airSpeed = 1.5;
+    private double airSpeed = 1.3;
 
     private int moving = 0; /*0 = not moving
                               *1 = moving left
@@ -147,7 +151,7 @@ public class Character extends Rectangle {
         this.setSize(new Dimension(getintWidth(), getintHeight()/2));
         inner.setSize(new Dimension(getintWidth()-10, getintHeight()/2+7));
         charging = true;
-        moveDown(width/2-20);
+        moveDown(width/2);
     }
 
     public void stand(){
@@ -168,32 +172,27 @@ public class Character extends Rectangle {
         y_vel = chargeAmount;
         moveUp(width/2);
         chargeAmount = 0;
-        //TODO: delete later
-        try {
-            frame.setHitboxes();
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
     public void stepLeft(){
         moving = 1;
         if(charging) return;
-        if(!canControl) return;
+        if(canControl == false) return;
         x_vel = -groundSpeed;
     }
     public void stepRight(){
         moving = 2;
         if(charging) return;
-        if(!canControl) return;
+        if(canControl == false) return;
         x_vel = groundSpeed;
     }
+
     public void enableControls(){
         canControl = true;
     }
     public void disableControls(){
         canControl = false;
     }
+
     /*
     * MOVEMENT FOR DOUBLE
     */
@@ -233,8 +232,11 @@ public class Character extends Rectangle {
     }
     
     public void doGravity() {
-        if(charging && chargeAmount > -3.65){
-            chargeAmount -= .03;
+        if(chargeAmount < -maxCharge){
+            stopCharging();
+        }
+        else if(charging){
+            chargeAmount -= chargingSpeed;
         }
         if(charging)
             return;
@@ -250,6 +252,7 @@ public class Character extends Rectangle {
         if(inner == null) return;
         inner.setLocation(new Point((int) newLocation.getX() + xsmaller / 2, (int) newLocation.getY() + ysmaller / 2));
     }
+
     public void moveTo(double x, double y) {
         Point newLocation = new Point();
         newLocation.setLocation(x, y);
@@ -258,6 +261,7 @@ public class Character extends Rectangle {
         inner.setLocation(new Point((int) newLocation.getX() + xsmaller / 2, (int) newLocation.getY() + ysmaller / 2));
     }
 
+    //returns a character that is used for reference of one frame ahead
     public Character getNextFrame(){
         Character nextFrame = new Character(this);
         nextFrame.moveTo(this.getintX()+this.getintX_vel()
@@ -270,20 +274,21 @@ public class Character extends Rectangle {
         if(!onGround) return;
         x_vel = 0;
     }
+
     public void setHeight(int height) {
-        setSize(new Dimension(getintWidth(), height));
+        setSize(new Dimension(getintWidth(), height-sizeSmaller));
     }
 
     public void setWidth(int width) {
-        setSize(new Dimension(width, getintHeight()));
+        setSize(new Dimension(width-sizeSmaller, getintHeight()));
     }
     
     public void setx_vel(double newVel) {
-        x_vel = newVel;
+        x_vel = newVel-sizeSmaller;
     }
 
     public void sety_vel(double newVel) {
-        y_vel = newVel;
+        y_vel = newVel-sizeSmaller;
     }
 
     public int getintX() {
@@ -310,7 +315,10 @@ public class Character extends Rectangle {
          */
         return Math.round(Math.round(y_vel));
     }
-
+    
+    public boolean getControl(){
+        return canControl;
+    }
     public double getx_vel() {
         return x_vel;
     }

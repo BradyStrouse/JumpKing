@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
+import javax.naming.SizeLimitExceededException;
 
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -29,6 +30,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 public class myFrame extends JFrame {
+    public static int sizeSmaller = 500;
     // The main controlled character
     private Character chara = new Character(50, 70, 250, 250,this);
     int level = 0;
@@ -72,7 +74,8 @@ public class myFrame extends JFrame {
     }
     
     private void createAndMakeGUI() {
-        Dimension size = new Dimension(1200, 800);
+        Dimension size = new Dimension(1000, 750);
+        System.out.println(size.getWidth() + " " + size.getHeight());
         chara.moveTo((int) size.getWidth() / 2, (int) size.getHeight() / 2);
         pane = new JPanel() {
             @Override
@@ -114,7 +117,6 @@ public class myFrame extends JFrame {
         // if the vels are negative then the character will move the other direction
         chara.moveUp(chara.gety_vel());
         chara.moveRight(chara.getx_vel());
-        // System.out.println(chara);
         for(Hitbox hit:hbox){
             if(chara.getNextFrame().intersectsLine(hit)){
                 chara.enableControls();
@@ -167,6 +169,6 @@ public class myFrame extends JFrame {
                 coords[i] = Integer.parseInt(strCoords[i]);
             }
             hbox.add(new Hitbox(coords[0], coords[1], coords[2], coords[3]));
-        }  
+        }        
     }
 }

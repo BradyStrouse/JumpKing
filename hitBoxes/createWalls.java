@@ -21,7 +21,8 @@ import java.io.FileWriter;
 import javax.imageio.ImageIO;
 
 public class createWalls extends JFrame{
-    Dimension size = new Dimension(1200, 800);
+    int sizeMod = 2; //the smaller the bigger
+    Dimension size = new Dimension(1000, 750);
     JPanel pane;
     int x1, y1, x2, y2;
     int snapRange = 20; //the range that makes it snap to horizontal/vertical
@@ -89,13 +90,25 @@ public class createWalls extends JFrame{
                     if(inRange(x1, snapRange, lineX1)){
                         x1 = lineX1;
                     }
+                    if(inRange(x1, snapRange, lineX2)){
+                        x1 = x2;
+                    }
                     if(inRange(x2, snapRange, lineX2)){
                         x2 = lineX2;
+                    }
+                    if(inRange(x2, snapRange, lineX1)){
+                        x2 = lineX1;
                     }
                     if(inRange(y1, snapRange, lineY1)){
                         y1 = lineY1;
                     }
+                    if(inRange(y2, snapRange, lineY1)){
+                        y2 = lineY1;
+                    }
                     if(inRange(y2, snapRange, lineY2)){
+                        y2 = lineY2;
+                    }
+                    if(inRange(y1, snapRange, lineY2)){
                         y2 = lineY2;
                     }
                     
@@ -165,6 +178,7 @@ public class createWalls extends JFrame{
         File currentLevel = new File("hitBoxes//level_" + level + ".txt");
         Scanner reader = new Scanner(currentLevel);
         hbox = new ArrayList<Hitbox>();
+        if(reader.hasNextLine()) reader.nextLine();
         while(reader.hasNextLine()){
             String currentWall = reader.nextLine();
             String[] strCoords = currentWall.split(",");
@@ -177,9 +191,8 @@ public class createWalls extends JFrame{
     }
     private void addHitbox() throws IOException{
         hbox.add(new Hitbox(x1, x2, y1, y2));
-        
         try {
-            FileWriter myWriter = new FileWriter("hitBoxes//Level_"+level+".txt", true);
+            FileWriter myWriter = new FileWriter("\nhitBoxes//level_"+level+".txt", true);
             myWriter.append(Integer.toString(x1) + ',' + Integer.toString(x2) + ',' +
             Integer.toString(y1) + ',' + Integer.toString(y2) + "\n");
             myWriter.close();
@@ -200,13 +213,13 @@ public class createWalls extends JFrame{
         hbox.remove(hbox.size()-1);
         String fileName = "hitBoxes//level_" + level +".txt";
         RandomAccessFile f = new RandomAccessFile(fileName, "rw");
-        long length = f.length() - 1;
+        long length = f.length();
         byte b = 0;
         do {                     
-            length -= 1;
             f.seek(length);
+            length -= 1;
             b = f.readByte();
-        } while(b != 10);
+        } while(b != 10 && length > 0);
         f.setLength(length+1);
         f.close();
     }
